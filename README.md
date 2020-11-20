@@ -1,61 +1,92 @@
-# ReasonReact Template & Examples
+# Storybook for ReasonML/ReScript
 
-This is:
-- A template for your new ReasonReact project.
-- A collection of thin examples illustrating ReasonReact usage.
-- Extra helper documentation for ReasonReact (full ReasonReact docs [here](https://reasonml.github.io/reason-react/)).
+This is a very short demonstration illustrating how to use Storybook MDX
+with ReasonML and ReScript.  For those of you unfamiliar with ReasonML
+and ReScript, they are a new Javascript syntax that parses directly to
+OCaml and then into native and fairly performant Javascript.
 
-`src` contains 4 sub-folders, each an independent, self-contained ReasonReact example. Feel free to delete any of them and shape this into your project! This template's more malleable than you might be used to =).
+# Background
 
-The point of this template and examples is to let you understand and personally tweak the entirely of it. We **don't** give you an opaque, elaborate mega build setup just to put some boxes on the screen. It strikes to stay transparent, learnable, and simple. You're encouraged to read every file; it's a great feeling, having the full picture of what you're using and being able to touch any part.
+There were three generations of ReScript:
 
-## Run
+- [Bucklescript](https://jaredforsyth.com/posts/getting-started-with-reason-and-bucklescript/),
+  a project by Bloomberg News that converted OCaml directly into
+  Javascript.  The Bucklescript compiler is at the root of all of future
+  projects.
+- ReasonML, a compiler that converted a Javascript-like syntax into the
+  OCaml language, and then called Bucklescript.  ReasonML was supposed
+  to be "Javascript friendly," and looked much more like the Algol-like
+  syntax of Javascript and less the indented style of OCaml.
+- [ReScript](https://rescript-lang.org/), the latest iteration of the
+  ReasonML compiler with a cleaner and much better Javascript interop.
 
-```sh
-npm install
-npm run server
-# in a new tab
-npm start
+I enjoy working in ReScript, but at this point I can't find a good use
+for it in my own ecosystem.  There are pain points with Javascript
+interop that I still find unacceptable.  There's
+[ReasonReact](https://reasonml.github.io/reason-react/), but using a lot
+of third-party React components can get dreary very quickly.
+
+I wish that weren't the case, but until ReScript matures a little more
+I'm not going to be using it professionally.
+
+# This Project's Purpose:
+
+There are a lot of good tools in the Javascript ecosystem that I would
+like to leverage when working with ReScript.  One of them is
+[Storybook](https://storybook.js.org/), a tool that allows developers to
+see their
+[WebComponents](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+rendering independent of the framework in which they're being developed.
+I firmly believe in the separation of responsibilities between
+[effectful](https://dev.to/busypeoples/notes-on-typescript-handling-side-effects-3nid)
+and effect-free code, and if you build your WebComponents responsibly,
+that should be an easy condition to meet.
+
+This project shows the endpoint of adding Storybook to an existing
+ReScript project.  There is a tool for [writing Storybook stories with
+ReScript](https://github.com/draftbit/bs-storybook), but what I wanted
+was something easier: I wanted to used
+[MDX](https://storybook.js.org/docs/react/api/mdx), a format that allows
+you to mix Markdown and JSX.
+
+The steps are straightforward.  First, add Storybook:
+
+``` sh
+$ yarn global add storybook
+$ npx sb init
 ```
 
-Open a new web page to `http://localhost:8000/`. Change any `.re` file in `src` to see the page auto-reload. **You don't need any bundler when you're developing**!
+Storybook installs MDX by default, so you should have it.
 
-**How come we don't need any bundler during development**? We highly encourage you to open up `index.html` to check for yourself!
+☝ By default, every ReasonReact functional component exports itself as a
+ReScript *module*, a container similar to a library but with much more
+capability, and that module exports a function named `make` as the
+functional React component name.
 
-# Features Used
+☝ By default and convention, the Bucklescript compiler converts all
+ReScript files, ending in `.res`, into Javascript with a `.bs.js`
+extension.
 
-|                           | Blinking Greeting | Reducer from ReactJS Docs | Fetch Dog Pictures | Reason Using JS Using Reason |
-|---------------------------|-------------------|---------------------------|--------------------|------------------------------|
-| No props                  |                   | ✓                         |                    |                              |
-| Has props                 |                   |                           |                    | ✓                            |
-| Children props            | ✓                 |                           |                    |                              |
-| No state                  |                   |                           |                    | ✓                            |
-| Has state                 | ✓                 |                           |  ✓                 |                              |
-| Has state with useReducer |                   | ✓                         |                    |                              |
-| ReasonReact using ReactJS |                   |                           |                    | ✓                            |
-| ReactJS using ReasonReact |                   |                           |                    | ✓                            |
-| useEffect                 | ✓                 |                           |  ✓                 |                              |
-| Dom attribute             | ✓                 | ✓                         |                    | ✓                            |
-| Styling                   | ✓                 | ✓                         |  ✓                 | ✓                            |
-| React.array               |                   |                           |  ✓                 |                              |
+☝ MDX files have two parts: The header, and the body.  The header is
+everything before the first blank line, and is interpreted as Javascript
+directives.  After a blank line, everything is treated as Markdown
+*unless* it is obviously parsable as JSX, in which case it is treated as
+JSX.
 
-# Bundle for Production
+With this knowledge, a complete example of importing a ReScript object
+into an MDX documentation module is simple:
 
-We've included a convenience `UNUSED_webpack.config.js`, in case you want to ship your project to production. You can rename and/or remove that in favor of other bundlers, e.g. Rollup.
+``` markdown
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { make as Card } from "../Card.bs";
 
-We've also provided a barebone `indexProduction.html`, to serve your bundle.
+<Meta title="MDX/Card" component={Card} />
 
-```sh
-npm install webpack webpack-cli
-# rename file
-mv UNUSED_webpack.config.js webpack.config.js
-# call webpack to bundle for production
-./node_modules/.bin/webpack
-open indexProduction.html
+A simple Card API:
+
+<Card content={"This is a test"}/>
 ```
 
-# Handle Routing Yourself
-
-To serve the files, this template uses a minimal dependency called `moduleserve`. A URL such as `localhost:8000/scores/john` resolves to the file `scores/john.html`. If you'd like to override this and handle URL resolution yourself, change the `server` command in `package.json` from `moduleserve ./ --port 8000` to `moduleserve ./ --port 8000 --spa` (for "single page application"). This will make `moduleserve` serve the default `index.html` for any URL. Since `index.html` loads `Index.bs.js`, you can grab hold of the URL in the corresponding `Index.re` and do whatever you want.
-
-By the way, ReasonReact comes with a small [router](https://reasonml.github.io/reason-react/docs/en/router) you might be interested in.
+And that's it.  Include the component with `{ make as Component }` and
+include the `.bs` part of the extension (but *not* the `.js` that will
+be visible in the filesystem).

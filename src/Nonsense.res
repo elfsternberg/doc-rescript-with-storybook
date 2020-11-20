@@ -1,10 +1,6 @@
-type state =
-  | Error
-  | Words(list<string>)
-
 @react.component
 let make = _ => {
-  let (state, setState) = React.useState(_ => Words(list{}))
+  let (state, setState) = React.useState(_ => MaybeWords.Words(list{}))
 
   Random.self_init()
 
@@ -68,14 +64,7 @@ let make = _ => {
     |> ignore
     None
   })
-  
-  <div>
-    { switch(state) {
-        | Error => React.string("Huh?")
-        | Words(list{}) => React.string("Loading...")
-        | Words(words) => React.string(String.concat(" ", words))
-      }
-    }
-  </div>
+
+  <Noncard words={state} />
 }
     

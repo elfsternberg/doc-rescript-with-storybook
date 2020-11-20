@@ -4,12 +4,12 @@ var List = require("bs-platform/lib/js/list.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Random = require("bs-platform/lib/js/random.js");
-var $$String = require("bs-platform/lib/js/string.js");
 var Js_dict = require("bs-platform/lib/js/js_dict.js");
 var Js_json = require("bs-platform/lib/js/js_json.js");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_string = require("bs-platform/lib/js/caml_string.js");
+var Noncard$Nonsense = require("./Noncard.bs.js");
 
 function Nonsense(Props) {
   var match = React.useState(function () {
@@ -18,7 +18,6 @@ function Nonsense(Props) {
               };
       });
   var setState = match[1];
-  var state = match[0];
   Random.self_init(undefined);
   var decodeWord = function (json) {
     return Belt_Option.flatMap(Belt_Option.flatMap(Belt_Option.flatMap(Belt_Option.flatMap(Js_json.decodeObject(json), (function (object_) {
@@ -131,14 +130,9 @@ function Nonsense(Props) {
               });
           
         }), []);
-  var tmp;
-  if (state) {
-    var words = state._0;
-    tmp = words ? $$String.concat(" ", words) : "Loading...";
-  } else {
-    tmp = "Huh?";
-  }
-  return React.createElement("div", undefined, tmp);
+  return React.createElement(Noncard$Nonsense.make, {
+              words: match[0]
+            });
 }
 
 var make = Nonsense;
