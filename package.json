@@ -1,0 +1,41 @@
+{
+  "name": "nonsense",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w -ws _ ",
+    "clean": "bsb -clean-world",
+    "serve": "moduleserve ./ --port 8000",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "keywords": [
+    "BuckleScript",
+    "ReasonReact",
+    "reason-react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@storybook/addon-actions": "^6.1.1",
+    "@storybook/addon-knobs": "^6.1.1",
+    "@storybook/addon-links": "^6.1.1",
+    "bs-fetch": "^0.6.2",
+    "bs-storybook": "^1.0.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "reason-react": ">=0.7.1",
+    "storybook": "^6.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@storybook/addon-essentials": "^6.1.1",
+    "@storybook/react": "^6.1.1",
+    "babel-loader": "^8.2.1",
+    "bs-platform": "^8.3.3",
+    "gentype": "^3.40.0",
+    "moduleserve": "^0.9.0"
+  },
+  "main": "index.js"
+}
