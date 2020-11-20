@@ -1,0 +1,39 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { make as Noncard } from "../Noncard.bs";
+import { working as NoncardWorking,
+	     empty as NoncardEmpty,
+		 error as NoncardError } from "./NoncardSupport.bs";
+
+<Meta title="MDX/Noncard" component={Noncard} />
+
+This demonstrates some of the real headaches with Bucklescript
+interop.  In order to make this work as expected, we're going to have
+to send to Noncard the types it expects.
+
+`Noncard` takes lists, which are like Lisp lists in tha they're
+basically linked lists of two cells, one with content, and one
+pointing to the next cell in the collection.  Internal ReScript
+typing is a pain in the neck, so if you look, there's a
+helper file here called `NonscardSupport.res` that Bucklescript
+compiles into the correct type.
+
+<div style={{padding: "0.6em", border: "1px solid #8c92ac", width: "12em" }}>
+<Noncard words={NoncardWorking} />
+</div>
+
+Which means that we can now illustrate the other parts of our code
+
+Here's what Noncard shows when we have no words to show:
+
+<div style={{padding: "0.6em", border: "1px solid #8c92ac", width: "12em" }}>
+<Noncard words={NoncardEmpty} />
+</div>
+
+And here's what it shows in the error state:
+
+<div style={{padding: "0.6em", border: "1px solid #8c92ac", width: "12em" }}>
+<Noncard words={NoncardError} />
+</div>
+
+
+

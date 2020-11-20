@@ -73,6 +73,11 @@ directives.  After a blank line, everything is treated as Markdown
 *unless* it is obviously parsable as JSX, in which case it is treated as
 JSX.
 
+☝ ReScripts's internal types come with internal type annotations that
+continue to live in other code.  If you want to use a React object that
+takes a ReScript linked list, you will want to generate that object with
+ReScript.
+
 With this knowledge, a complete example of importing a ReScript object
 into an MDX documentation module is simple:
 
@@ -90,3 +95,34 @@ A simple Card API:
 And that's it.  Include the component with `{ make as Component }` and
 include the `.bs` part of the extension (but *not* the `.js` that will
 be visible in the filesystem).
+
+If you want to use a more complex dataset as your example argument to a
+Storybook React component, especially one written using ReasonReact,
+you're going to have to encapsulate that dataset in ReScript.  Look in
+`./src/stories/NoncardSupport` and the accompanying compiled output to
+see how you use Storybook to demo a ReasonReact component that takes a
+Bucklescript linked list.
+
+## Credits
+
+The example here is derived from Juan Pedro Villa Isaza's [Nonsense!
+Getting started with Reason and ReasonReact
+](https://www.stackbuilders.com/tutorials/reason/nonsense-getting-started-with-reason-and-reason-react/),
+although I have separated the effectful and rendering components into
+separate modules, the better to illustrate how to test the visual
+components of the renderer.
+
+## License
+
+This repository was initialized with `yarn`, `bsb -init`, and `npx sb
+init`.  Mr. Isaza's work is clearly his.  The conversion from ReasonML
+to Rescript, the refactor into effect and view, and the storybook
+additions are entirely my own.
+
+My contributions are Copyright [Elf
+M. Sternberg](https://elfsternberg.com) (c) 2019, and licensed with the
+Mozilla Public License vers. 2.0.  A copy of the license file is
+included in the root folder.
+
+
+
